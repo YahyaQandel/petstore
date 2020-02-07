@@ -1,0 +1,10 @@
+# Django
+DJANGO_SECRET_KEY=c++vuv5i*i-@pb$9x%+(%e6pzpjwagc_ftt=w(v%oi8kuy9#8t#
+
+# postgres
+POSTGRES_DB=petstore
+POSTGRES_USER=petstore_user
+POSTGRES_PASSWORD=HASHED_PASSWORD
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+ALLOW_IP_RANGE=0.0.0.0/0

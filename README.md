@@ -1,10 +1,6 @@
 #### Pet-store system
 
 
-##### Install dependencies
-```bash
-pip install -r requirements
-```
 
 ##### To run the development server
 ```bash

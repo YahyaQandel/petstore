@@ -1,6 +1,15 @@
 SHELL := /bin/sh
-DJANGO_TEST_SETTINGS_MODULE = $(PROJECT).settings.$(TEST_SETTINGS)
 test:
-	python3 manage.py test
+	docker-compose run --rm -T django python manage.py test
 start:
-	python3 manage.py runserver
+	docker-compose up
+build:
+	docker-compose build --no-cache
+down:
+	docker-compose down
+prune:
+	docker-compose down -v
+logs:
+	docker-compose logs -f django
+shell:
+	docker-compose exec  django bash
