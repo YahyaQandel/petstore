@@ -11,5 +11,5 @@ prune:
 	docker-compose down -v
 logs:
 	docker-compose logs -f django
-shell:
+bash:
 	docker-compose exec  django bash
