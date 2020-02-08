@@ -39,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'category',
     'pet',
     'tag',
+    'user',
     'rest_framework_swagger',
 ]
 
@@ -56,9 +58,18 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'petstore.authentication_backends.BearerAuthentication',
+    )
 }
 ROOT_URLCONF = 'petstore.urls'
+
+
+AUTH_USER_MODEL = "user.User"
+
 
 TEMPLATES = [
     {
