@@ -1,7 +1,8 @@
 from django.db import models
-from model_utils.models import SoftDeletableModel
+from model_utils.models import SoftDeletableModel, TimeStampedModel
 from category.models import Category
 from tag.models import Tag
+from user.models import User
 
 # Create your models here.
 AVAILABLE = "0"
@@ -17,3 +18,4 @@ class Pet(SoftDeletableModel):
     name = models.CharField("Pet Name", blank=True, null=False, max_length=255)
     tag = models.ManyToManyField(Tag, blank=False, null=False, related_name='pet_tags')
     status = models.CharField(max_length=30, choices=STATUS_TYPE, default=AVAILABLE)
+    owner = models.ForeignKey(User, blank=False, null=False, on_delete=models.PROTECT, default=None)

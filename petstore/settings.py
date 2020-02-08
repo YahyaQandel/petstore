@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'pet',
     'tag',
     'user',
+    'bid',
     'rest_framework_swagger',
 ]
 
