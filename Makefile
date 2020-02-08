@@ -13,3 +13,7 @@ logs:
 	docker-compose logs -f django
 bash:
 	docker-compose exec  django bash
+makemigrations:
+	docker-compose run --rm -T django python manage.py makemigrations
+migrate:
+	docker-compose run --rm -T django python manage.py migrate
