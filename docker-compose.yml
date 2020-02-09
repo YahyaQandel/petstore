@@ -22,7 +22,9 @@ services:
 
   postgres:
     container_name: petstore-database
-    image: postgres
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
     env_file:
       - .envs/.dev
     ports:
