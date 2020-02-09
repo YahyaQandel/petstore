@@ -6,8 +6,9 @@ from rest_framework.authtoken.models import Token
 class UserFactory(DjangoModelFactory):
     phone = Faker('phone_number')
     email = Faker("email")
-    first_name = Faker("name")
-    last_name = Faker("name")
+    first_name = Faker("first_name")
+    last_name = Faker("last_name")
+    username = Faker("name")
 
     @post_generation
     def create_token(self, create: bool, extracted, **kwargs):
@@ -15,4 +16,4 @@ class UserFactory(DjangoModelFactory):
 
     class Meta:
         model = User
-        django_get_or_create = ["email"]
+        django_get_or_create = ["username"]

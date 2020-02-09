@@ -3,17 +3,21 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from pet.models import Pet
-from bid.serializer import BidSerializer
+from bid.serializer import BidSerializer, BidResponseSerializer
 from pet.models import StatusType
+from bid.models import Bid
+import moneyed
 
 
-class Bid(APIView):
+class BidApi(APIView):
     class_serializer = BidSerializer()
     permission_classes = (
         IsAuthenticated,
     )
 
     def post(self, request, id, format=None):
+        serializer = BidSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         try:
             pet = Pet.objects.get(id=id)
         except Pet.DoesNotExist:
@@ -22,4 +26,6 @@ class Bid(APIView):
             return Response(data={"detail": "Pet is not available for bidding"}, status=status.HTTP_400_BAD_REQUEST)
         if pet.owner.id == request.user.id:
             return Response(data={"detail": "Pet owner cannot bid on his own pet"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(data={}, status=status.HTTP_201_CREATED)
+        bid = Bid(pet=pet, owner=request.user, amount=moneyed.Money(request.data['amount'], currency='USD'))
+        bid.save()
+        return Response(data=BidResponseSerializer(bid).data, status=status.HTTP_201_CREATED)
