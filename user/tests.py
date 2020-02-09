@@ -2,6 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from user.factories import UserFactory
 from rest_framework.authtoken.models import Token
+from user.models import User
 
 
 # Create your tests here.
@@ -38,6 +39,8 @@ class TestUser(TestCase):
         response = self.client.post(self.LOGIN_URL, data)
         self.assertEqual(response.status_code, 401)
         response_data = response.json()
-        self.assertIn('error', response_data)
-        self.assertIn('message', response_data)
-        self.assertEquals(response_data['message'], "The user credentials were incorrect.")
+        self.assertIn('detail', response_data)
+        self.assertEquals(response_data['detail'], "The user credentials were incorrect.")
+
+    def tearDown(self):
+        User.objects.filter(id=self.user.id).delete()

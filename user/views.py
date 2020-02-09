@@ -18,10 +18,10 @@ class UserApi(APIView):
             user = User.objects.get(email=request.data['email'])
             if not user.check_password(user_password):
                 return Response(
-                    data={"error": "invalid_credentials", "message": "The user credentials were incorrect."},
+                    data={"detail": "The user credentials were incorrect."},
                     status=status.HTTP_401_UNAUTHORIZED)
         except User.DoesNotExist:
-            return Response(data={"error": "invalid_credentials", "message": "The user credentials were incorrect."},
+            return Response(data={"detail": "The user credentials were incorrect."},
                             status=status.HTTP_401_UNAUTHORIZED)
         token, _ = Token.objects.get_or_create(user=user)
         return Response(data=ResponseSerializer(user).data, status=status.HTTP_200_OK)

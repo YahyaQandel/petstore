@@ -1,6 +1,6 @@
 SHELL := /bin/sh
 test:
-	docker-compose run --rm -T django python manage.py test
+	docker-compose run --rm -T django python manage.py test  --noinput
 start:
 	docker-compose up
 build:

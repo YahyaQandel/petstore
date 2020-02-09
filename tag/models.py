@@ -6,3 +6,5 @@ from model_utils.models import SoftDeletableModel
 class Tag(SoftDeletableModel):
     name = models.CharField("Tag Name", blank=True, null=False, max_length=255)
 
+    def __str__(self):
+        return "{}".format(self.name)

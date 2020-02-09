@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework_swagger.views import get_swagger_view
 from user.views import UserApi
+from bid.views import Bid
 schema_view = get_swagger_view(title='Swagger Docs')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('routes/', schema_view),
     path("v2/oauth/token", UserApi.as_view(), name="login"),
+    path("v2/pet/<id>/bid", Bid.as_view(), name="bid"),
 
 ]

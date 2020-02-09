@@ -1,5 +1,6 @@
-from factory import DjangoModelFactory, Faker
+from factory import DjangoModelFactory, Faker, post_generation
 from user.models import User
+from rest_framework.authtoken.models import Token
 
 
 class UserFactory(DjangoModelFactory):
@@ -8,5 +9,10 @@ class UserFactory(DjangoModelFactory):
     first_name = Faker("name")
     last_name = Faker("name")
 
+    @post_generation
+    def create_token(self, create: bool, extracted, **kwargs):
+        Token.objects.get_or_create(user=self)
+
     class Meta:
         model = User
+        django_get_or_create = ["email"]
