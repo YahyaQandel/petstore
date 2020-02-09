@@ -784,6 +784,9 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 COPY public.authtoken_token (key, created, user_id) FROM stdin;
 a210444f685125e48e525703a28c6d37a6bc6e01	2020-02-08 18:33:27.537109+00	1
 ed68b4bd5d9d546a7a469146994d6a3661b81576	2020-02-09 15:08:15.53599+00	16
+71deb6b384b20d76ad39c0e9bfce98244ffc93ec	2020-02-09 22:03:51.897893+00	17
+141c25ca2c6585e8dc2bffda94ff51fd534c62e2	2020-02-09 22:04:19.002135+00	18
+303beff77be6faa89716010661d52cbea900aee3	2020-02-09 22:04:32.756835+00	19
 \.
 
 
@@ -792,7 +795,10 @@ ed68b4bd5d9d546a7a469146994d6a3661b81576	2020-02-09 15:08:15.53599+00	16
 --
 
 COPY public.bid_bid (id, created, modified, is_removed, amount_currency, amount, owner_id, pet_id) FROM stdin;
-1	2020-02-09 15:08:38.70521+00	2020-02-09 15:08:38.70521+00	f	USD	12.00	16	1
+2	2020-02-09 22:05:56.473986+00	2020-02-09 22:05:56.473986+00	f	USD	500.00	17	1
+3	2020-02-09 22:06:25.620298+00	2020-02-09 22:06:25.620298+00	f	USD	280.00	18	1
+4	2020-02-09 22:06:46.168277+00	2020-02-09 22:06:46.168277+00	f	USD	320.00	19	1
+1	2020-02-09 15:08:38.70521+00	2020-02-09 15:08:38.70521+00	f	USD	100.00	16	1
 \.
 
 
@@ -940,9 +946,9 @@ COPY public.tag_tag (id, is_removed, name) FROM stdin;
 COPY public.user_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, phone) FROM stdin;
 1	pbkdf2_sha256$150000$ow6vgzLk5LP5$bXdBSd1G2eifCyK+tg/WSZCF9sSSmvZB6/rNC7R4v/I=	2020-02-09 00:17:16.207095+00	t	yahyaqandel	Yahya\n	Qandel	yahya.qandel@gmail.com	t	t	2020-02-08 18:28:46.594738+00	
 16	pbkdf2_sha256$150000$ow6vgzLk5LP5$bXdBSd1G2eifCyK+tg/WSZCF9sSSmvZB6/rNC7R4v/I=	2020-02-01 15:05:13+00	f	john.doe	John	Doe	john.doe@example.com	f	t	2020-02-09 15:03:49+00	01110555540
-17	test_password	2020-02-08 16:27:09+00	f	john.smith	John	Smith	john.smith@example.com	f	t	2020-02-09 16:25:59+00	307-672-0994x9295
-18	test_password	2020-02-08 16:29:37+00	f	sara.conor	Sara	Conor	sara.conor@example.com	f	t	2020-02-09 16:29:23+00	539-153-9462x6513
-19	test_password	\N	f	martin.fowler	Martin	Fowler	martin.fowler@example.com	f	t	2020-02-09 16:30:10+00	947-643-0685
+17	pbkdf2_sha256$150000$ow6vgzLk5LP5$bXdBSd1G2eifCyK+tg/WSZCF9sSSmvZB6/rNC7R4v/I=	2020-02-08 16:27:09+00	f	john.smith	John	Smith	john.smith@example.com	f	t	2020-02-09 16:25:59+00	307-672-0994x9295
+18	pbkdf2_sha256$150000$ow6vgzLk5LP5$bXdBSd1G2eifCyK+tg/WSZCF9sSSmvZB6/rNC7R4v/I=	2020-02-08 16:29:37+00	f	sara.conor	Sara	Conor	sara.conor@example.com	f	t	2020-02-09 16:29:23+00	539-153-9462x6513
+19	pbkdf2_sha256$150000$ow6vgzLk5LP5$bXdBSd1G2eifCyK+tg/WSZCF9sSSmvZB6/rNC7R4v/I=	\N	f	martin.fowler	Martin	Fowler	martin.fowler@example.com	f	t	2020-02-09 16:30:10+00	947-643-0685
 \.
 
 
@@ -987,7 +993,7 @@ SELECT pg_catalog.setval('public.auth_permission_id_seq', 48, true);
 -- Name: bid_bid_id_seq; Type: SEQUENCE SET; Schema: public; Owner: petstore_user
 --
 
-SELECT pg_catalog.setval('public.bid_bid_id_seq', 1, true);
+SELECT pg_catalog.setval('public.bid_bid_id_seq', 4, true);
 
 
 --
