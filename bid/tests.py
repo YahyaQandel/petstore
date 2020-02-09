@@ -8,9 +8,11 @@ from user.models import User
 from pet.factories import PetFactory
 from pet.models import Pet, StatusType
 from bid.models import Bid
+import moneyed
 
 TOKEN_TYPE = 'Bearer'
 BID_URL = '/v2/pet/{}/bid'
+PET_BIDS = '/v2/pet/{}/bid'
 
 
 def get_request_authentication_headers(user):
@@ -27,7 +29,7 @@ class TestBid(TestCase):
         self.request_headers = get_request_authentication_headers(self.user)
         self.data = {'amount': "10.00"}
 
-    def testBidOnNonExistantPet(self):
+    def testBidOnNonExistingPet(self):
         response = self.api_client.post(BID_URL.format(12), data=self.data, **self.request_headers)
         response_data = response.json()
         self.assertEquals(response.status_code, 400)
@@ -74,8 +76,51 @@ class TestBid(TestCase):
         response_data = response.json()
         self.assertEquals(response.status_code, 201)
         bid = Bid.objects.get(pet=self.pet)
-        self.assertEquals(bid.id, response_data['id'])
-        self.assertEquals(response_data['amount'], "${}".format(self.data['amount']))
+        self.assertEquals(bidder.id, response_data['user']['id'])
+        self.assertEquals(bid.amount, moneyed.Money(self.data['amount'], currency='USD'))
+
+    def testGetBidsByNotOwner(self):
+        pet = PetFactory()
+        self.request_headers = get_request_authentication_headers(self.user)
+        response = self.api_client.get(PET_BIDS.format(pet.id), **self.request_headers)
+        response_data = response.json()
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('detail', response_data)
+        self.assertEquals(response_data['detail'], "Current user is not authorized to view bids on this pet")
+
+    def testGetBids(self):
+        pet = PetFactory()
+        user_one = UserFactory()
+        user_two = UserFactory()
+        user_three = UserFactory()
+        user_four = UserFactory()
+        user_one_bid_amount = 100.00
+        user_two_bid_amount = 500.00
+        user_three_bid_amount = 280.00
+        user_four_bid_amount = 320.00
+        first_bid = Bid(pet=pet, owner=user_one, amount=moneyed.Money(user_one_bid_amount, currency='USD'))
+        second_bid = Bid(pet=pet, owner=user_two, amount=moneyed.Money(user_two_bid_amount, currency='USD'))
+        third_bid = Bid(pet=pet, owner=user_three, amount=moneyed.Money(user_three_bid_amount, currency='USD'))
+        fourth_bid = Bid(pet=pet, owner=user_four, amount=moneyed.Money(user_four_bid_amount, currency='USD'))
+        first_bid.save()
+        second_bid.save()
+        third_bid.save()
+        fourth_bid.save()
+        self.request_headers = get_request_authentication_headers(pet.owner)
+        response = self.api_client.get(PET_BIDS.format(pet.id), **self.request_headers)
+        response_data = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response_data[0]['amount'], "${:.2f}".format(user_one_bid_amount))
+        self.assertEquals(response_data[0]['user']['email'], user_one.email)
+
+        self.assertEquals(response_data[1]['amount'], "${:.2f}".format(user_two_bid_amount))
+        self.assertEquals(response_data[1]['user']['email'], user_two.email)
+
+        self.assertEquals(response_data[2]['amount'], "${:.2f}".format(user_three_bid_amount))
+        self.assertEquals(response_data[2]['user']['email'], user_three.email)
+
+        self.assertEquals(response_data[3]['amount'], "${:.2f}".format(user_four_bid_amount))
+        self.assertEquals(response_data[3]['user']['email'], user_four.email)
 
     def tearDown(self):
         Bid.objects.all().delete()

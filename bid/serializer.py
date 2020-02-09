@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from user.serializer import UserSerializer
 
 
 class BidSerializer(serializers.Serializer):
@@ -7,5 +8,5 @@ class BidSerializer(serializers.Serializer):
 
 
 class BidResponseSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+    user = UserSerializer(source='owner')
     amount = serializers.CharField()

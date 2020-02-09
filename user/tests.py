@@ -6,13 +6,13 @@ from user.models import User
 
 
 # Create your tests here.
+LOGIN_URL = '/v2/oauth/token'
 
 
 class TestUser(TestCase):
-    LOGIN_URL = '/v2/oauth/token'
 
     def setUp(self):
-        self.client = APIClient()
+        self.api_client = APIClient()
         self.user = UserFactory()
         self.user_password = 'test_password'
         self.user.set_password(self.user_password)
@@ -23,7 +23,7 @@ class TestUser(TestCase):
             'email': self.user.email,
             'password': self.user_password,
         }
-        response = self.client.post(self.LOGIN_URL, data)
+        response = self.api_client.post(LOGIN_URL, data)
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
         self.assertIn('id', response_data)
@@ -36,7 +36,7 @@ class TestUser(TestCase):
             'email': self.user.email,
             'password': "wrong_password",
         }
-        response = self.client.post(self.LOGIN_URL, data)
+        response = self.api_client.post(LOGIN_URL, data)
         self.assertEqual(response.status_code, 401)
         response_data = response.json()
         self.assertIn('detail', response_data)

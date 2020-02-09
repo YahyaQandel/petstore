@@ -29,3 +29,20 @@ class BidApi(APIView):
         bid = Bid(pet=pet, owner=request.user, amount=moneyed.Money(request.data['amount'], currency='USD'))
         bid.save()
         return Response(data=BidResponseSerializer(bid).data, status=status.HTTP_201_CREATED)
+
+    def get(self, request, id, format=None):
+
+        # @TODO duplicate
+        try:
+            pet = Pet.objects.get(id=id)
+        except Pet.DoesNotExist:
+            return Response(data={"detail": "Pet id doesn\'t exists"}, status=status.HTTP_400_BAD_REQUEST)
+        if pet.owner.id != request.user.id:
+            return Response(data={"detail": "Current user is not authorized to view bids on this pet"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        bids = Bid.objects.filter(pet=pet)
+        response_list = []
+        for bid in bids:
+            response_list.append(BidResponseSerializer(bid).data)
+
+        return Response(data=response_list, status=status.HTTP_200_OK)
