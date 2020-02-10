@@ -49,7 +49,8 @@ make start
 
 
 Other endpoints and code that have been implemented only to validate the scenarios and the structure of the pet store
-Example:- `/v2/oauth/token` to validate that only authenticated users and users who are owners of pets that could list their pets bids and i really enjoyed it.
+Example:- `/v2/oauth/token` to validate that only authenticated users and users who are owners of pets that could list their pets bids.
+and also i really enjoyed developing it.
 
 
 
