@@ -1,4 +1,4 @@
-#### Pet-store system
+# Pet-store system
 
 
 
@@ -25,7 +25,7 @@ make test
 make test
 ```
 
-#### Challenge 1 steps
+### Challenge 1 steps
 ```bash
 make start
 ```
@@ -48,12 +48,12 @@ make start
 `` Authorization: Bearer {user#1 token}``
 
 
-##### Other endpoints and code that have been implemented only to validate the scenarios and the structure of the pet store
-##### Example:- `/v2/oauth/token` to validate that only authenticated users and users who are owners of pets that could list their pets bids and i really enjoyed it.
+Other endpoints and code that have been implemented only to validate the scenarios and the structure of the pet store
+Example:- `/v2/oauth/token` to validate that only authenticated users and users who are owners of pets that could list their pets bids and i really enjoyed it.
 
 
 
-#### Challenge 2 steps 
+### Challenge 2 steps 
 ##### Path ` petstore/auction/`
 ##### Run the tests 
 ```bash
